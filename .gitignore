@@ -1,0 +1,6 @@
+.*.sw*
+
+*.o
+*.log
+src/core*
+src/observer

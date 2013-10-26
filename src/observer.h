@@ -7,26 +7,45 @@
 extern "C" {
 #endif
 
-typedef void (*observer_on_notify_f)(struct inotify_event *ie);
-
 typedef struct observer* observer_t;
+
+typedef void (*observer_on_notify_f)(observer_t *observer, const char *path, uint32_t mask);
+
 struct observer
 {
     /**
      * Watch the specified directory
+     * 
+     * @param self {@link observer_t}
+     *           obsersver_t object
+     * @param root
+     *           the path to watch
+     * @param mask
+     *           event mask, see {@code inotify}
+     * @param fn
+     *           event listener
+     * @return -1 on error occurred or 0 on success
      */
-    int (*watch)(observer_t *self, const char *root, int mask, observer_on_notify_f fn);
+    int (*watch)(observer_t *self, const char *path, int mask, observer_on_notify_f fn);
 
     /**
      * Free this obsever
+     * 
+     * @param self {@link observer_t}
+     *           obsersver_t object
      */
     void (*free)(observer_t *self);
 };
 
-extern observer_t observer_new();
+/**
+ * New an instance of {@link observer_t}
+ * 
+ * @return an instance of {@link observer_t}
+ */
+extern observer_t observer_new(int *status);
 
 #ifdef __cplusplus
-extern "C" {
+}
 #endif
 
 #endif /* __OBSERVER_H__ */
