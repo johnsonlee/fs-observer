@@ -11,8 +11,9 @@
 #include <sys/types.h>
 
 
-#define MASK (IN_CREATE | IN_DELETE | IN_ONLYDIR)
+#define HOME "/home"
 
+#define MASK (IN_CREATE | IN_DELETE | IN_ONLYDIR)
 
 static int running = 1;
 
@@ -29,7 +30,12 @@ static void _on_notify(observer_t *obsvr, const char *path, uint32_t mask)
     struct stat sb;
 
     strcpy(buf, path);
-    home = strchr(buf + 6, '/');
+
+    if (NULL == (home = strchr(buf + sizeof(HOME) + 1, '/'))) {
+        printf("Ignore %s\n", path);
+        return;
+    }
+
     *home = '\0';
 
     // the path could be a temporary file, so,
@@ -89,7 +95,7 @@ int main(int argc, char *argv[])
 #endif
 
     observer_t obsvr = observer_new(&running);
-    obsvr->watch(&obsvr, "/home", MASK, _on_notify);
+    obsvr->watch(&obsvr, HOME, MASK, _on_notify);
     obsvr->free(&obsvr);
 
     return EXIT_SUCCESS;

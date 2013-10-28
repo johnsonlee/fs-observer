@@ -22,7 +22,7 @@ dnl define pthread cflag
 AC_SUBST(PTHREAD_CFLAGS, [-pthread])
 
 AC_ARG_ENABLE([debug],
-    [  --enable-debug                   Turn on debugging],
+    [  --enable-debug          Turn on debugging],
     [case "${enableval}" in
       yes) debug=true; CFLAGS="-O0 -g3 -ggdb";;
       no)  debug=false; CFLAGS="-DNDEBUG";;

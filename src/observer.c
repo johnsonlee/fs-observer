@@ -169,6 +169,7 @@ static void* observer_scan(void *arg)
 {
     struct _scan_task *task = (struct _scan_task*) arg;
 
+    observer_add_watch(task->self, task->path);
     observer_deep_scan(task->self, task->path);
 
     return task;
@@ -239,6 +240,7 @@ static size_t observer_read_event(struct _observer *self, int fd)
         off = EVENT_SIZE + ie->len;
         tmp += off;
         nbytes -= off;
+        printf("0x%x:%s\n", ie->mask, ie->name);
         observer_process_event(self, ie);
     }
 
