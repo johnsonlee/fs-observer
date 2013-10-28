@@ -1,6 +1,12 @@
 .*.sw*
+.deps
 
 *.o
+*.cache
 *.log
+*.in
+
+config.status
+
 src/core*
 src/observer
