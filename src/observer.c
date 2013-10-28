@@ -220,11 +220,11 @@ static void observer_process_event(struct _observer *self, struct inotify_event 
 /**
  * Read inotify events
  */
-static int observer_read_event(struct _observer *self, int fd)
+static size_t observer_read_event(struct _observer *self, int fd)
 {
     int off;
-    int nevt;
     int8_t *tmp;
+    size_t nevt;
     size_t nbytes;
     int8_t buf[EVTBUFSIZE];
     struct inotify_event *ie;
@@ -234,20 +234,13 @@ static int observer_read_event(struct _observer *self, int fd)
         return 0;
     }
 
-    off = 0;
-    nevt = 0;
-    tmp = buf;
-
-    for (nevt = 0; nbytes > 0; nevt++) {
+    for (off = nevt = 0, tmp = buf; nbytes > 0; nevt++) {
         ie = (struct inotify_event*) tmp;
         off = EVENT_SIZE + ie->len;
         tmp += off;
         nbytes -= off;
         observer_process_event(self, ie);
-        nevt++;
     }
-
-    printf("The Number of Event: %d\n", nevt);
 
     return nevt;
 }

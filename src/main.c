@@ -32,7 +32,9 @@ static void _on_notify(observer_t *obsvr, const char *path, uint32_t mask)
     home = strchr(buf + 6, '/');
     *home = '\0';
 
-    printf("HOME: %s\n", buf);
+    // the path could be a temporary file, so,
+    // don't care about the error by stat and chown
+
     if (stat(buf, &sb)) {
         perror("stat");
         return;
