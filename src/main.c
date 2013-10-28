@@ -32,7 +32,7 @@ static void _on_notify(observer_t *obsvr, const char *path, uint32_t mask)
     strcpy(buf, path);
 
     if (NULL == (home = strchr(buf + sizeof(HOME) + 1, '/'))) {
-        printf("Ignore %s\n", path);
+        printf("Ignore %s (0x%x)\n", path, mask);
         return;
     }
 

@@ -180,6 +180,11 @@ static void observer_process_event(struct _observer *self, struct inotify_event 
     char fullpath[PATH_MAX];
     const char *path = observer_get_path(self, ie->wd);
 
+    if (NULL == path) {
+        printf("Ignore %s (0x%x)\n", ie->name, ie->mask);
+        return;
+    }
+
     snprintf(fullpath, sizeof(fullpath), "%s/%s", path, ie->name);
 
     switch (ie->mask & (IN_ALL_EVENTS | IN_UNMOUNT | IN_Q_OVERFLOW | IN_IGNORED)) {
@@ -240,7 +245,7 @@ static size_t observer_read_event(struct _observer *self, int fd)
         off = EVENT_SIZE + ie->len;
         tmp += off;
         nbytes -= off;
-        printf("0x%x:%s\n", ie->mask, ie->name);
+        printf("%s (0x%x)\n", ie->name, ie->mask);
         observer_process_event(self, ie);
     }
 
