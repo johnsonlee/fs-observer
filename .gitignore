@@ -1,15 +1,10 @@
-.*.sw*
-.deps
+.*.swp
 
+*.d
 *.o
-*.cache
-*.log
-*.in
+*.target.mk
+*.Makefile
 
-core
-core.*
-config.status
 Makefile
+out
 
-src/core*
-src/observer
